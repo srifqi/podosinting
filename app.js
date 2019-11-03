@@ -101,6 +101,12 @@ window.addEventListener('load', function() {
 		popView();
 	});
 	$('back-entry-step').addEventListener('click', popView);
+	$('delete-entry').addEventListener('click', function() {
+		if (confirm('Yakin hapus proyek ini?')) {
+			data.entries.splice(activeEntryIndex, 1);
+			popView();
+		}
+	});
 	for (let i = 1; i <= 5; i ++) {
 		$('day' + i).addEventListener('click', new Function('day' + i + '()'));
 	}
