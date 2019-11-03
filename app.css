@@ -1,0 +1,359 @@
+.t-body {
+    z-index: 0;
+    max-width: 640px;
+    margin: 0 auto;
+    border: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: rgba(0,0,0,0.6); /* main text color */
+}
+
+.t-body, .t-body * {
+    z-index: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+.t-layout-header {
+    display: none;
+    height: 56px;
+    flex-direction: column;
+    background: #00796b; /* main bg color */
+    color: white; /* header text color */
+}
+
+.t-layout-header-row {
+    display: flex;
+    width: calc(100% - 32px);
+    padding: 16px;
+}
+
+.t-layout-header-row > * {
+    max-height: 24px;
+}
+
+.t-app-bar-sub-container {
+    margin-top: -8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.t-layout-subtitle {
+    font-size: 12px;
+}
+
+.t-app-bar-elevated {
+    z-index: 4;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.20);
+}
+
+.t-layout-title-icon {
+    margin-right: 16px;
+    cursor: pointer;
+}
+
+.t-layout-title {
+    align-self: flex-start;
+    justify-content: left;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.t-layout-spacer {
+    flex-grow: 1;
+}
+
+.t-navigation {
+    align-self: flex-end;
+}
+
+.t-navigation__link, .t-navigation__link:visited {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    text-decoration: none;
+    color: white; /* header text color */
+    cursor: pointer;
+}
+
+.t-navigation__link:active {
+    color: rgba(255,255,0,0.87);
+}
+
+.t-layout-content {
+    z-index: 0;
+    display: none;
+}
+
+.t-content__separator {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    border: 1px solid rgba(0,0,0,0.3);
+}
+
+.t-text-big {
+    font-size: 32px;
+}
+
+.t-button-outline, .t-button-empty {
+    height: 36px;
+    max-height: 36px;
+    margin: 4px;
+    border: 0;
+    border-radius: 4px;
+    padding: 1px 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.t-button-outline {
+    border: 1px solid #00796b; /* accent color */
+    background: white;
+    color: #00796b; /* accent color */
+}
+
+.t-button-outline:hover, .t-button-outline:focus {
+    background: lightgray;
+}
+
+.t-button-outline:active {
+    background: #00796b; /* accent color */
+    color: white;
+}
+
+.t-button-empty {
+    background: white;
+    color: #00796b; /* accent color */
+    font-weight: bold;
+}
+
+.t-button-empty:hover, .t-button-empty:active, .t-button-empty:focus {
+    background: lightgray;
+}
+
+.t-layout-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    height: 128px;
+    background: lightgray url(assets/cover-0.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.t-layout-profile-info {
+    width: 100%;
+}
+
+.t-profile-combo {
+    display: flex;
+    flex-direction: row;
+}
+
+.t-profile-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 128px;
+    height: 128px;
+    margin-top: -48px;
+    margin-left: 16px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: lightblue url(assets/photo-0.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.t-task-buttons {
+    margin: 16px;
+}
+
+.t-profile-infos {
+    padding: 16px;
+}
+
+.t-profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.87);
+}
+
+.t-profile-score {
+    font-size: 16px;
+}
+
+.t-calendar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 32px);
+    padding: 16px;
+}
+
+.t-calendar th, .t-calendar td {
+    width: 32px;
+    height: 32px;
+    border-collapse: separate;
+    text-align: center;
+}
+
+.t-calendar th {
+    font-weight: bold;
+}
+
+.t-calendar td {
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+
+.t-calendar td.date-active {
+    background: #00796b; /* main bg color */
+    color: white;
+}
+
+.t-calendar td:hover, .t-calendar td:active, .t-calendar td:focus {
+    background: lightgray;
+    color: rgba(0,0,0,0.6); /* main text color */
+}
+
+.t-entry-meta {
+    margin: 16px 8px 0;
+    font-size: 12px;
+}
+
+.t-list-entry {
+    width: calc(100% - 16px);
+    margin: 8px;
+    border: 1px solid rgba(0,0,0,0.3);
+    padding: 16px;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.t-list-entry:hover, .t-list-entry:active, .t-list-entry:focus {
+    background: #b8e0da;
+    border: 1px solid #48a999;
+}
+
+.t-entry-title {
+    font-size: 18px;
+}
+
+.input-invalid {
+    border-color: red !important;
+    color: red !important;
+}
+
+.t-label-text {
+    display: block;
+    margin: 16px;
+    border: 1px solid #00796b;
+    border-radius: 4px;
+    padding: 15px 15px 10px;
+    cursor: text;
+}
+
+.t-label-text * {
+    transition: all 0.2s ease-in;
+}
+
+.t-label-text.t-label-text-active {
+    border: 2px solid #00796b; /* main bg color */
+    padding: 14px 14px 9px;
+}
+
+.t-label-text.t-label-text-active > div {
+    margin: -27px 0 0 -4px;
+}
+
+.t-label-text.t-label-text-active > div > span {
+    background: white;
+    color: #00796b; /* main bg color */
+    padding: 0 4px;
+    font-size: 12px;
+}
+
+.t-label-text > input[type=text] {
+    display: block;
+    height: 28px;
+    width: 100%;
+    margin: -25px 0 0;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 16px;
+}
+
+.t-label-text.t-label-text-active > input[type=text] {
+    margin: 2px 0 0;
+}
+
+.t-label-date {
+    display: block;
+    margin: 16px;
+    border: 1px solid #00796b;
+    border-radius: 4px;
+    padding: 15px 15px 10px;
+    cursor: text;
+}
+
+.t-label-date * {
+    transition: all 0.2s ease-in;
+}
+
+.t-label-date.t-label-date-active {
+    border: 2px solid #00796b; /* main bg color */
+    padding: 14px 14px 10px;
+}
+
+.t-label-date > div {
+    margin: -27px 0 0 -4px;
+}
+
+.t-label-date > div > span {
+    background: white;
+    color: #00796b; /* main bg color */
+    padding: 0 4px;
+    font-size: 12px;
+}
+
+.t-label-date > input[type=date], .t-label-date > input[type=time] {
+    display: block;
+    height: 28px;
+    margin: 2px 0 0;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+}
+
+.t-layout-step-start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 32px);
+    min-height: 256px;
+    padding: 16px;
+}
+
+.t-layout-step-start > * {
+    margin: 24px 0;
+}
+
+.t-layout-timer {
+    width: calc(100% - 32px);
+    min-height: 256px;
+    padding: 16px;
+}
+
+.t-layout-timer > canvas {
+    display: block;
+    width: 256px;
+    height: 256px;
+    margin: auto;
+}

@@ -1,0 +1,24 @@
+.t-label-text {
+    border: 2px solid #00796b; /* main bg color */
+    padding: 14px 14px 9px;
+}
+
+.t-label-text > div {
+    margin: -27px 0 0 -4px;
+}
+
+.t-label-text > div > span {
+    background: white;
+    color: #00796b; /* main bg color */
+    padding: 0 4px;
+    font-size: 12px;
+}
+
+.t-label-text > input[type=text] {
+    margin: 2px 0 0;
+}
+
+.t-label-date {
+    border: 2px solid #00796b; /* main bg color */
+    padding: 14px 14px 10px;
+}

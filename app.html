@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <title>Podo Sinting</title>
+        <meta content="width=device-width,initial-scale=1.0" name="viewport">
+        <link rel="stylesheet" href="app.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script defer src="app.js"></script>
+		<noscript><link rel="stylesheet" href="app-noscript.css"></noscript>
+    </head>
+    <body class="t-body">
+        <header id="header-main" class="t-layout-header">
+        <div class="t-layout-header-row t-app-bar">
+            <span class="t-layout-title">Podo Sinting</span>
+            <div class="t-layout-spacer"></div>
+            <nav class="t-navigation">
+                <a class="t-navigation__link material-icons" href="">more_vert</a>
+            </nav>
+        </div>
+        </header>
+        <header id="header-list" class="t-layout-header">
+        <div class="t-layout-header-row t-app-bar">
+			<i id="back-list" class="t-layout-title-icon material-icons">arrow_back</i>
+            <span class="t-layout-title">Daftar Proyek</span>
+            <div class="t-layout-spacer"></div>
+            <nav class="t-navigation">
+                <i id="new-entry" class="t-navigation__link material-icons">add</i>
+            </nav>
+        </div>
+        </header>
+        <header id="header-entry-new" class="t-layout-header">
+        <div class="t-layout-header-row t-app-bar">
+			<i id="back-entry-new" class="t-layout-title-icon material-icons">arrow_back</i>
+            <span class="t-layout-title">Proyek Baru</span>
+            <div class="t-layout-spacer"></div>
+            <nav class="t-navigation">
+                <i id="add-entry" class="t-navigation__link material-icons">check</i>
+            </nav>
+        </div>
+        </header>
+        <header id="header-entry-step" class="t-layout-header">
+        <div class="t-layout-header-row t-app-bar">
+			<i id="back-entry-step" class="t-layout-title-icon material-icons">arrow_back</i>
+            <span id="entry-step-title" class="t-layout-title">Proyek #1</span>
+        </div>
+        </header>
+        <header id="header-entry-step-start" class="t-layout-header">
+        <div class="t-layout-header-row t-app-bar t-app-bar-sub">
+			<i id="back-entry-step-start" class="t-layout-title-icon material-icons">arrow_back</i>
+			<div class="t-app-bar-sub-container">
+			<span id="entry-step-start-subtitle" class="t-layout-subtitle">Proyek #1</span>
+			<span id="entry-step-start-title" class="t-layout-title">Hari Pertama</span>
+			</div>
+        </div>
+        </header>
+        <header id="header-clock" class="t-layout-header">
+        <div class="t-layout-header-row t-app-bar t-app-bar-sub">
+			<i id="back-clock" class="t-layout-title-icon material-icons">arrow_back</i>
+			<div class="t-app-bar-sub-container">
+			<span id="clock-subtitle" class="t-layout-subtitle">Proyek #1</span>
+			<span id="clock-title" class="t-layout-title">Hari Pertama</span>
+			</div>
+        </div>
+        </header>
+        <div id="content-main" class="t-layout-content">
+        <div class="t-layout-banner"><!--<i class="material-icons">add_photo_alternate</i>--></div>
+        <div class="t-layout-profile-info">
+            <div class="t-profile-combo">
+            <div class="t-profile-photo"><!--<i class="material-icons">person</i>--></div>
+            <div class="t-layout-spacer"></div>
+            <nav class="t-task-buttons">
+                <button class="t-button-outline" id="b-check">cek</button>
+                <button class="t-button-outline" id="b-create">tambah</button>
+            </nav>
+            </div>
+            <div class="t-profile-infos">
+                <div class="t-profile-name">Muhammad Rifqi</div>
+                <div class="t-profile-score">3.000 poin</div>
+            </div>
+        </div>
+        <div class="t-content__separator"></div>
+        <div id="content-calendar" class="t-calendar"></div>
+        </div>
+        <div id="content-list" class="t-layout-content">
+		<div class="t-entry-meta">(Tidak ada proyek.)</div>
+        </div>
+        <div id="content-entry-new" class="t-layout-content">
+		<form>
+			<label class="t-label-text t-js">
+				<div><span>Judul Proyek</span></div>
+				<input type="text" id="project-title">
+			</label>
+			<label class="t-label-date t-js">
+				<div><span>Tanggal Mulai</span></div>
+				<input type="date" id="project-date">
+			</label>
+			<label class="t-label-date t-js">
+				<div><span>Waktu Mulai</span></div>
+				<input type="time" id="project-time">
+			</label>
+		</form>
+        </div>
+        <div id="content-entry-step" class="t-layout-content">
+		<button id="day1" class="t-list-entry">
+			<div class="t-entry-info">
+				<div class="t-entry-title">Hari Pertama</div>
+			</div>
+		</button>
+		<button id="day2" class="t-list-entry">
+			<div class="t-entry-info">
+				<div class="t-entry-title">Hari Kedua</div>
+			</div>
+		</button>
+		<button id="day3" class="t-list-entry">
+			<div class="t-entry-info">
+				<div class="t-entry-title">Hari Ketiga</div>
+			</div>
+		</button>
+		<button id="day4" class="t-list-entry">
+			<div class="t-entry-info">
+				<div class="t-entry-title">Hari Keempat</div>
+			</div>
+		</button>
+		<button id="day5" class="t-list-entry">
+			<div class="t-entry-info">
+				<div class="t-entry-title">Hari Kelima</div>
+			</div>
+		</button>
+        </div>
+        <div id="content-entry-step-start" class="t-layout-content">
+		<div class="t-layout-step-start">
+			<span class="t-text-big">Ayo, mulai!</span>
+			<button class="t-button-outline" id="b-start-clock">mulai</button>
+		</div>
+        </div>
+        <div id="content-clock" class="t-layout-content">
+		<div class="t-layout-timer">
+            <span id="main-timer-text"></span>
+			<canvas id="main-timer"></canvas>
+		</div>
+        </div>
+    </body>
+</html>
