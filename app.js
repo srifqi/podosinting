@@ -197,7 +197,16 @@ function showList() {
 		let entry = data.entries[i];
 		let divMeta = document.createElement('div');
 		divMeta.className = 't-entry-meta';
-		divMeta.innerText = 'Sedang berlangsung';
+		let dt = entry.datetime;
+		let dateStr = dt[2] + ' ' + MONTHS[dt[1] - 1][0] + ' ' + dt[0];
+		let dateTS = (new Date(dt[0], dt[1] - 1, dt[2])).getTime();
+		let _5days = 5 * 24 * 60 * 60 * 1000;
+		if (Date.now() > dateTS + _5days)
+			divMeta.innerText = 'Sudah berlalu';
+		else if (Date.now() >= dateTS && Date.now() <= dateTS + _5days)
+			divMeta.innerText = 'Sedang berlangsung';
+		else
+			divMeta.innerText = dateStr;
 		let btn = document.createElement('button');
 		btn.className = 't-list-entry';
 		btn.innerHTML = '<div class="t-entry-info"><div class="t-entry-title">' + entry.title + '</div></div>';
@@ -240,6 +249,9 @@ function openEntry(ID) {
 	$('header-entry-step').style.display = 'flex';
 	$('content-entry-step').style.display = 'block';
 	$('entry-step-title').innerText = data.entries[activeEntryIndex].title;
+	let dt = data.entries[activeEntryIndex].datetime;
+	let dateStr = dt[2] + ' ' + MONTHS[dt[1] - 1][0] + ' ' + dt[0];
+	$('entry-desc').innerText = 'Proyek dimulai tanggal ' + dateStr + '.';
 }
 
 const DAYS = [
