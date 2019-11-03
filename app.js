@@ -121,6 +121,8 @@ window.addEventListener('load', function() {
 		(new Function(HASHES[hash[0]] + '("' + hash[1] + '")'))();
 	else
 		main();
+	if (document.location.hash == '')
+		history.replaceState({view: 'main', fn: 'main'}, '', '#main');
 });
 
 function hideAll() {
