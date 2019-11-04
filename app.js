@@ -11,6 +11,8 @@ const HASHES = {
 	'hari-ke-3': 'day3',
 	'hari-ke-4': 'day4',
 	'hari-ke-5': 'day5',
+	'pewaktu': 'startClock',
+	'baru': 'newAcc',
 	_: 0
 };
 
@@ -18,8 +20,8 @@ var data = JSON.parse(localStorage.getItem('data')) || {entries: []};
 var lastSync = localStorage.getItem('lastSync') || Date.now();
 function sync() {
 	data.entries.sort(function(a, b) {
-		let A = a.datetime.join('');
-		let B = b.datetime.join('');
+		let A = (new Date(a[0], a[1] - 1, a[2], a[3], a[4])).getTime();
+		let B = (new Date(b[0], b[1] - 1, b[2], b[3], b[4])).getTime();
 		if (A < B) return -1;
 		if (A > B) return 1;
 		return 0;
@@ -110,25 +112,61 @@ window.addEventListener('load', function() {
 	for (let i = 1; i <= 5; i ++) {
 		$('day' + i).addEventListener('click', new Function('day' + i + '()'));
 	}
-	$('back-entry-step-start').addEventListener('click', popView);
-	$('b-start-clock').addEventListener('click', startClock);
+	$('back-entry-step-start').addEventListener('click', function() {
+		history.back(2);
+	});
+	$('b-start-clock').addEventListener('click', function() {
+		history.pushState({view: 'clock', fn: 'startClock'}, '', '#pewaktu~' + activeDay + data.entries[activeEntryIndex].ID);
+		startClock();
+	});
 	$('back-clock').addEventListener('click', function() {
-		if (confirm("Sudahi hari ini?")) {
-			data.entries[activeEntryIndex].steps[activeDay] = 1;
+		if (confirm('Yakin ingin keluar?')) {
+			timerStart = false;
+			popView();
 		}
-		popView();
 	});
 	timerCanvas = $('main-timer');
 	timerCanvas.addEventListener('click', function() {
 
 	});
+	$('create-acc').addEventListener('click', function() {
+		$('user-name').parentElement.classList.remove('input-invalid');
+		let valid = true;
+		if ($('user-name').value.trim().length == 0) {
+			$('user-name').parentElement.classList.add('input-invalid');
+			valid = false;
+		}
+		if (!valid) return;
+		data.name = $('user-name').value;
+		$('user-name').value = '';
+		history.replaceState({view: 'main', fn: 'main'}, '', '#main');
+		main();
+	});
 	let hash = document.location.hash.substr(1).split('~');
 	if (HASHES.hasOwnProperty(hash[0]))
 		(new Function(HASHES[hash[0]] + '("' + hash[1] + '")'))();
-	else
-		main();
-	if (document.location.hash == '')
-		history.replaceState({view: 'main', fn: 'main'}, '', '#main');
+	else {
+		if (data.name != undefined && data.name.trim().length > 0)
+			main();
+		else {
+			history.replaceState({view: 'new-acc', fn: 'newAcc'}, '', '#baru');
+			newAcc();
+		}
+	}
+	if (document.location.hash == '') {
+		if (data.name != undefined && data.name.trim().length > 0)
+			history.replaceState({view: 'main', fn: 'main'}, '', '#main');
+		else
+			history.replaceState({view: 'new-acc', fn: 'newAcc'}, '', '#baru');
+	}
+});
+window.addEventListener('beforeunload', function(ev) {
+	if (timerStart && !confirm('Yakin ingin keluar?')) {
+		ev.preventDefault();
+		ev.returnValue = 'Anda masih memiliki kegiatan yang sedang berjalan.';
+		return;
+	}
+	delete ev['returnValue'];
 });
 
 function hideAll() {
@@ -144,18 +182,45 @@ function popView() {
 	history.back();
 }
 window.addEventListener('popstate', function(ev) {
+	if (timerStart && ev.state.view != 'clock') {
+		if (!confirm('Yakin ingin keluar?')) {
+			history.go(1);
+			return;
+		} else {
+			timerStart = false;
+		}
+	}
 	if (ev.state.fn !== undefined)
 		(new Function(ev.state.fn + '()'))();
 	else
 		main();
 });
 
+function newAcc() {
+	sync();
+	if (data.name != undefined && data.name.trim().length > 0) {
+		history.replaceState({view: 'main', fn: 'main'}, '', '#main');
+		main();
+	} else {
+		hideAll();
+		$('header-new-acc').style.display = 'flex';
+		$('content-new-acc').style.display = 'block';
+	}
+}
+
 function main() {
 	sync();
-	hideAll();
-	$('header-main').style.display = 'flex';
-	$('content-main').style.display = 'block';
-	updateCalendar();
+	if (data.name != undefined && data.name.trim().length > 0) {
+		document.title = 'Podo Sinting';
+		hideAll();
+		$('header-main').style.display = 'flex';
+		$('content-main').style.display = 'block';
+		$('t-user-name').innerText = data.name;
+		updateCalendar();
+	} else {
+		history.replaceState({view: 'new-acc', fn: 'newAcc'}, '', '#baru');
+		newAcc();
+	}
 }
 
 const YEAR = (new Date()).getFullYear();
@@ -192,6 +257,7 @@ function updateCalendar() {
 
 function showList() {
 	sync();
+	document.title = 'Daftar Proyek - Podo Sinting';
 	hideAll();
 	$('header-list').style.display = 'flex';
 	$('content-list').style.display = 'block';
@@ -207,9 +273,10 @@ function showList() {
 		let dateStr = dt[2] + ' ' + MONTHS[dt[1] - 1][0] + ' ' + dt[0];
 		let dateTS = (new Date(dt[0], dt[1] - 1, dt[2])).getTime();
 		let _5days = 5 * 24 * 60 * 60 * 1000;
-		if (Date.now() > dateTS + _5days)
+		let now = Date.now();
+		if (now > dateTS + _5days)
 			divMeta.innerText = 'Sudah berlalu';
-		else if (Date.now() >= dateTS && Date.now() <= dateTS + _5days)
+		else if (now >= dateTS && now <= dateTS + _5days)
 			divMeta.innerText = 'Sedang berlangsung';
 		else
 			divMeta.innerText = dateStr;
@@ -225,6 +292,7 @@ function showList() {
 }
 
 function createEntry() {
+	document.title = 'Entry Baru - Podo Sinting';
 	hideAll();
 	$('header-entry-new').style.display = 'flex';
 	$('content-entry-new').style.display = 'block';
@@ -233,6 +301,14 @@ function createEntry() {
 function switchToMain() {
 	history.replaceState({view: 'main', fn: 'main'}, '', '#utama');
 	main();
+}
+
+function getNthDay(dt) {
+	let T = (new Date(dt[0], dt[1] - 1, dt[2])).getTime();
+	let w = new Date();
+	let N = (new Date(w.getFullYear(), w.getMonth(), w.getDate())).getTime();
+	let _1day = 24 * 60 * 60 * 1000;
+	return (N - T) / _1day + 1;
 }
 
 var activeEntryIndex;
@@ -251,6 +327,7 @@ function loadEntry(ID) {
 function openEntry(ID) {
 	if (ID == undefined) ID = data.entries[activeEntryIndex].ID;
 	if (!loadEntry(ID)) { switchToMain(); return; }
+	document.title = data.entries[activeEntryIndex].title + ' - Podo Sinting';
 	hideAll();
 	$('header-entry-step').style.display = 'flex';
 	$('content-entry-step').style.display = 'block';
@@ -258,6 +335,11 @@ function openEntry(ID) {
 	let dt = data.entries[activeEntryIndex].datetime;
 	let dateStr = dt[2] + ' ' + MONTHS[dt[1] - 1][0] + ' ' + dt[0];
 	$('entry-desc').innerText = 'Proyek dimulai tanggal ' + dateStr + '.';
+	let d = getNthDay(dt);
+	for (let i = 1; i <= 5; i ++) {
+		let icon = $('day' + i).getElementsByClassName('material-icons');
+		icon[0].innerText = i == d ? 'play_arrow' : i < d ? 'check' : 'schedule';
+	}
 }
 
 const DAYS = [
@@ -270,6 +352,7 @@ const DAYS = [
 var activeDay;
 function day(k) {
 	activeDay = k - 1;
+	document.title = 'Hari ke-' + (activeDay + 1) + ' - ' + data.entries[activeEntryIndex].title + ' - Podo Sinting';
 	hideAll();
 	$('header-entry-step-start').style.display = 'flex';
 	$('content-entry-step-start').style.display = 'block';
@@ -277,10 +360,14 @@ function day(k) {
 	$('entry-step-start-title').innerText = DAYS[activeDay];
 	$('clock-subtitle').innerText = data.entries[activeEntryIndex].title;
 	$('clock-title').innerText = DAYS[activeDay];
+	let d = getNthDay(data.entries[activeEntryIndex].datetime) - 1;
+	$('b-start-clock').disabled = activeDay == d ? '' : '1';
+	$('b-start-clock').innerText = activeDay == d ? 'mulai' : activeDay < d ? 'sudah dilewati' : 'dijadwalkan';
+	$('t-start-title').innerText = activeDay == d ? 'Ayo, mulai!' : activeDay < d ? 'Sudah selesai!' : 'Fokus hari ke-' + (d + 1) + ', ya!';
 }
 
 function dayN(n, ID) {
-	if (ID == undefined) ID = acdata.entries[activeEntryIndex].ID;
+	if (ID == undefined) ID = data.entries[activeEntryIndex].ID;
 	if (!loadEntry(ID)) { switchToMain(); return; }
 	history.pushState({view: 'entry-step-start', fn: 'day' + n}, '',
 			'#hari-ke-' + n + '~' + ID);
@@ -293,26 +380,37 @@ function day4(ID) { dayN(4, ID); }
 function day5(ID) { dayN(5, ID); }
 
 var timerStartTime, timerCanvasCtx, timerInterval;
-var timerTime, numOfCycle;
+var timerTime, numOfCycle, timerStart = false;
 var timerCanvas;
 const t1 = 25 * 60 * 1000;
 const t2 = 5 * 60 * 1000;
 const timerS = 256;
-function startClock() {
+function startClock(args) {
+	document.title = 'Pewaktu - Hari ke-' + (activeDay + 1) + ' - ' + data.entries[activeEntryIndex].title + ' - Podo Sinting';
 	hideAll();
 	$('header-clock').style.display = 'flex';
 	$('content-clock').style.display = 'block';
-	numOfCycle = 0;
-	timerTime = t1;
-	startTimer();
+	if (args != undefined && args.trim().length > 1) {
+		activeDay = Number(args[0]);
+		if (!loadEntry(args.substr(1))) { switchToMain(); return; }
+	}
+	if (!timerStart) {
+		numOfCycle = 0;
+		timerTime = t1;
+		startTimer();
+	}
 }
 
 function startTimer() {
+	timerStart = true;
 	timerCanvas.width = timerS;
 	timerCanvas.height = timerS;
 	timerCanvasCtx = timerCanvas.getContext('2d');
 	timerStartTime = Date.now();
+	data.entries[activeEntryIndex].steps[activeDay] = timerStartTime;
+	sync();
 	timerInterval = setInterval(function() {
+		if (!timerStart) clearInterval(timerInterval);
 		let duration = Date.now() - timerStartTime;
 		let remaining = timerTime - duration;
 		if (remaining < 0) remaining = 0;
@@ -336,5 +434,6 @@ function startTimer() {
 		timerCanvasCtx.textAlign = 'center';
 		timerCanvasCtx.textBaseline = 'middle';
 		timerCanvasCtx.fillText(minute + '.' + second, timerS / 2, timerS / 2);
+		if (remaining <= 0) timerStart = false;
 	}, 1);
 }
