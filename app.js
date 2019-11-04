@@ -364,6 +364,9 @@ function day(k) {
 	$('b-start-clock').disabled = activeDay == d ? '' : '1';
 	$('b-start-clock').innerText = activeDay == d ? 'mulai' : activeDay < d ? 'sudah dilewati' : 'dijadwalkan';
 	$('t-start-title').innerText = activeDay == d ? 'Ayo, mulai!' : activeDay < d ? 'Sudah selesai!' : 'Fokus hari ke-' + (d + 1) + ', ya!';
+	/*$('t-start-p').innerText = [
+		''
+	][activeDay];*/
 }
 
 function dayN(n, ID) {
@@ -434,6 +437,12 @@ function startTimer() {
 		timerCanvasCtx.textAlign = 'center';
 		timerCanvasCtx.textBaseline = 'middle';
 		timerCanvasCtx.fillText(minute + '.' + second, timerS / 2, timerS / 2);
-		if (remaining <= 0) timerStart = false;
+		if (remaining <= 0) {
+			timerStart = false;
+			numOfCycle ++;
+			if (numOfCycle % 2 == 0) timerTime = t1;
+			else timerTime = t2;
+			startTimer();
+		}
 	}, 1);
 }
